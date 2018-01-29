@@ -32,7 +32,6 @@ Request for all IUCN redlist species with country code = AQ (antarctica)
 request <- paste("http://apiv3.iucnredlist.org/api/v3/country/getspecies/AQ?token=", token, sep = "")
 rl <- fromJSON(request)
 rl <- rl$result
-head(rl)
 ```
 
 Subset data frame to entries with vulnerable, critical and endangered species only.
@@ -51,12 +50,14 @@ Request for all occurrence records of these threatened species within antarctic 
 # polygon include antarctic and subantarctic area
 occ <- occurrence(scientificname = not.lc.dd$scientific_name, geometry = "POLYGON((180 -90, -180 -90, -180 -45, 180 -45, 180 -90))")
 
+# convert eventDate from string to date time format
+occ$eventDate <- as.POSIXct(strptime(occ$eventDate, format = "%Y-%m-%d %H:%M:%S", tz = "GMT"))
+occ$month <- as.numeric(format(occ$eventDate, "%m"))
+occ$year <- as.numeric(format(occ$eventDate, "%Y"))
+obs <- occ %>% filter(year == 2003)
+
 # remove preservedSpecimen occurrences
 obs <- occ %>% filter(basisOfRecord != "PreservedSpecimen")
-
-# convert eventDate from string to date time format
-occ$eventDate <- strptime(occ$eventDate, format = "%Y-%m-%d %H:%M:%S", tz = "GMT")
-occ$month <- as.numeric(format(occ$eventDate, "%m"))
 ```
 
 ## Plot map with [gganimate](https://github.com/dgrtwo/gganimate)
@@ -74,14 +75,15 @@ p <- ggplot() +
   scale_y_continuous(name = "latitude", breaks = (-2:2) * 30) + 
   scale_x_continuous(name = "longitude", breaks = (-4:4) * 45) + 
   coord_map("ortho", orientation = c(-90, 0, 0)) +
-  geom_point(data = occ, aes(x = decimalLongitude, y = decimalLatitude, color = genus, frame = month), size = 1, alpha = 0.5) +
+  geom_point(data = obs, aes(x = decimalLongitude, y = decimalLatitude, color = genus, frame = month), size = 1, alpha = 0.5) +
   scale_color_brewer(palette = "Dark2")
   
 # animate it
 animation <- gganimate(p, interval=.5, "occ_by_month.gif")
+animation
 ```
 
-![Figure: Occurrence time lapse by month, years are not taken into account.](occ_by_month.gif)
+![Figure: Occurrence time lapse by month in year 2003.](occ_by_month.gif)
 
 ## Remarks
 It's a nice exercise to show what you can do for occurrence records with R using information from [OBIS](http://iobis.org/) and [IUCN redlist](http://www.iucnredlist.org/). 
