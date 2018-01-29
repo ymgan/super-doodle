@@ -59,7 +59,7 @@ occ$eventDate <- strptime(occ$eventDate, format = "%Y-%m-%d %H:%M:%S", tz = "GMT
 occ$month <- as.numeric(format(occ$eventDate, "%m"))
 ```
 
-## Plot map with [gganimate](https://github.com/dgrtwo/gganimate)
+## Plot orthographic projected map and animate with [gganimate](https://github.com/dgrtwo/gganimate)
 Plot map with orthographic projection from South Pole and add a layer of occurrences, color by genus.
 
 Animate the plots and create a gif file called `occ_by_month.gif`
