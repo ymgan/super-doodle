@@ -37,7 +37,7 @@ rl <- rl$result
 Subset data frame to entries with vulnerable, critical and endangered species only.
 
 ```{r}
-# filter for results that are threatened (vulnerable, critical and endangered)
+# filter for results with categories == vulnerable, critical and endangered (threatened)
 not.lc.dd <- rl %>% filter(category %in% c("CR", "EN", "VU"))
 unique(not.lc.dd$category)
 ```
