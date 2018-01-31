@@ -30,7 +30,7 @@ head(sombase)
 
 ## Create taxa sequence
 
-`sunburstR` works with sequence. So let's first concatenate the taxa columns separated by "-".
+`sunburstR` works with sequence. So let's first concatenate the taxa columns into string and separate them by "-".
 
 ```{r}
 taxa <- data.frame(apply(sombase[,c("phylum", "class", "order", "family", "genus")], 1, paste, collapse="-"))
