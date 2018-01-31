@@ -1,0 +1,51 @@
+---
+title: "Visualizing taxon from occurrence core"
+output:
+  html_document:
+    df_print: paged
+---
+
+Recently I stumbled across this great R library [sunburstR](https://github.com/timelyportfolio/sunburstR) which could produce interactive sunburst. Thought this could be a good way to visualise taxa information for [biodiversity occurrence data](http://rs.tdwg.org/dwc/terms/)
+
+The dataset used in this demo is SOMBASE PYCNOGONIDS cited as below.
+
+## Dataset
+
+British Antarctic Survey. SOMBASE PYCNOGONIDS. Occurrence Dataset https://doi.org/10.15468/qtm508 accessed on 2018-01-31.
+
+## Load libraries
+
+```{r message=FALSE, warning=FALSE}
+library(robis)
+library(sunburstR)
+library(dplyr)
+```
+
+## Request occurrences using [robis](https://github.com/iobis/robis) 
+
+```{r message=FALSE, warning=FALSE}
+sombase <- occurrence(resourceid = 2296)
+head(sombase)
+```
+
+## Create taxa sequence
+
+`sunburstR` works with sequence. So let's first concatenate the taxa columns separated by "-".
+
+```{r}
+taxa <- data.frame(apply(sombase[,c("phylum", "class", "order", "family", "genus")], 1, paste, collapse="-"))
+colnames(taxa) <- "taxa-seq"
+head(taxa)
+```
+
+## Aggregate information and plot sunburst
+
+We can group the `taxa-seq` using group_by and count the frequency of each distinct sequence, then pipe the output into sunburst.
+
+```{r}
+taxa %>% 
+  group_by(`taxa-seq`) %>%
+  summarise(uniq_count = n_distinct(`taxa-seq`)) %>%  # count the frequency of each distinct taxa-seq
+  sunburst()
+```
+
