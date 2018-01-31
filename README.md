@@ -1,6 +1,6 @@
 # super-doodle
 
-
+A series of demo using different data visualization for biodiversity data.
 
 ## Visualizing time dimension with animation
 
