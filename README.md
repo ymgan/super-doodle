@@ -2,7 +2,7 @@
 
 A series of demo using different data visualization for biodiversity data.
 
-## [Visualizing time dimension of occurrence records with gif](occurrence-time-lapse/)
+## [Visualizing time dimension of occurrence records with gif](occurrence-time-lapse/occurrence_time_lapse.Rmd)
 
 This is a demo to produce a time lapse of threatened antarctic/subantarctic species using occurrence data from [OBIS](iobis.org) retrieved using their R package [robis](https://github.com/iobis/robis), [IUCN redlist](http://www.iucnredlist.org/) classification and [gganimate](https://github.com/dgrtwo/gganimate) library.
 
@@ -11,14 +11,14 @@ Shown below is the `.gif` produced from the R notebook [here](./occurrence-time-
 ![Time lapse gif made from occurrence data for year 2003.](occurrence-time-lapse/occ_by_month.gif)
 
 
-## [Visualizing taxa with sunburst](taxa-sunburst/)
+## [Visualizing taxa with sunburst](taxa-sunburst/taxa-sunburst.Rmd)
 
 A demo to visualise taxa using interactive sunburst. Checkout the awesome library [sunburstR](https://github.com/timelyportfolio/sunburstR)
 
 ![Taxa information from [SOMBASE PYCNOGONIDS](https://doi.org/10.15468/qtm508) dataset.](taxa-sunburst/taxa-sunburst.png)
 
 
-## [Bin occurrence records](bin-occurrences/)
+## [Bin occurrence records](bin-occurrences/bin-occurrences.Rmd)
 
 How to plot binned occurrence records in mercator projection and polar projection (South Pole).
 
