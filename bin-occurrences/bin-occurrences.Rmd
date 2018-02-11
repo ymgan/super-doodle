@@ -18,7 +18,7 @@ library(obistools)
 plot_map(occ)
 ```
 
-However, a lot of points are overlapping each other. It is difficult to tell how many points are there at certain locations.
+It's quick and nice to have a check how the distribution of the occurrence records look like. A lot of points are overlapping each other. It is difficult to tell how many points are there at certain locations. 
 
 ## Bin occurrences with [rbokeh](http://hafen.github.io/rbokeh/)
 
@@ -30,13 +30,14 @@ attach(occ)
 figure(width = 900, height = 450) %>%
   ly_map("world", color = "#707070", alpha = 0.8) %>%  # grey map
   ly_hexbin(decimalLongitude, decimalLatitude, xbins = 100, shape = 0.2,
-            alpha = 0.8, palette = "Spectral6", trans = log, inv = exp) %>% # log count  
+            alpha = 0.8, palette = "Spectral6", trans = log, inv = exp) %>% # colour by log count  
   theme_plot(background_fill_color = "black") %>%  # black background
   theme_grid(grid_line_alpha = 0)  # remove grid
 
 ```
 
 ## Polar projected map with binned occurrences
+
 ```{r}
 library(ggplot2)
 library(viridis)  # colorblind friendly 
