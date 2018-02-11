@@ -1,0 +1,59 @@
+---
+title: "Bin occurrence records"
+output: html_document
+---
+
+## Get data
+
+```{r message=FALSE, warning=FALSE}
+library(robis)
+occ <- occurrence(resourceid = 2296)
+dim(occ)
+```
+
+## Simple plot with [obistools](https://github.com/iobis/obistools)
+
+```{r message=FALSE, warning=FALSE}
+library(obistools)
+plot_map(occ)
+```
+
+However, a lot of points are overlapping each other. It is difficult to tell how many points are there at certain locations.
+
+## Bin occurrences with [rbokeh](http://hafen.github.io/rbokeh/)
+
+```{r message=FALSE, warning=FALSE}
+library(rbokeh)
+library(dplyr)
+attach(occ)
+
+figure(width = 900, height = 450) %>%
+  ly_map("world", color = "#707070", alpha = 0.8) %>%  # grey map
+  ly_hexbin(decimalLongitude, decimalLatitude, xbins = 100, shape = 0.2,
+            alpha = 0.8, palette = "Spectral6", trans = log, inv = exp) %>% # log count  
+  theme_plot(background_fill_color = "black") %>%  # black background
+  theme_grid(grid_line_alpha = 0)  # remove grid
+
+```
+
+## Polar projected map with binned occurrences
+```{r}
+library(ggplot2)
+library(viridis)  # colorblind friendly 
+
+world <- map_data("world")
+
+ggplot() + 
+  geom_bin2d(data = occ, aes(x = decimalLongitude, y = decimalLatitude), bins = 100) +  # bin data
+  geom_path(data = world, aes(x = long, y = lat, group = group), colour = "#c0c0c0") +  # map
+  scale_y_continuous(name = "latitude", breaks = (-2:2) * 30) + 
+  scale_x_continuous(name = "longitude", breaks = (-4:4) * 45) + 
+  coord_map("ortho", orientation = c(-90, 0, 0)) +  # orthographic projection from South Pole
+  scale_fill_viridis(option = "viridis", trans = "log") + # log scale for bin count
+  theme(panel.background = element_rect("black"),  # dark background
+        panel.grid = element_blank(),  # remove panel grid
+        axis.text.x = element_blank())  # remove x-axis value
+
+```
+
+In this example we plot map as line (no fill) on top of the bins, so that the bins do not block the view of map. Another option to do this is to adjust the `alpha` of the geom, but it does not look good in this case.
