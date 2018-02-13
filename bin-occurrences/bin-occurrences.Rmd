@@ -11,6 +11,10 @@ occ <- occurrence(resourceid = 2296)
 dim(occ)
 ```
 
+## Dataset
+
+British Antarctic Survey. SOMBASE PYCNOGONIDS. Occurrence Dataset https://doi.org/10.15468/qtm508 accessed on 2018-02-11.
+
 ## Simple plot with [obistools](https://github.com/iobis/obistools)
 
 ```{r message=FALSE, warning=FALSE}
